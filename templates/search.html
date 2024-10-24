@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Shows Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .search-bar {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+        }
+        .search-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+        .show-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .show-image {
+            width: 100px;
+            float: left;
+            margin-right: 20px;
+        }
+        .show-info {
+            overflow: hidden;
+        }
+        .show-title {
+            font-size: 24px;
+            margin: 0;
+        }
+        .show-genres, .show-summary, .show-rating {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>TV Shows Search</h1>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <form id="searchForm">
+            <input type="text" id="searchInput" class="search-bar" placeholder="Search for TV shows..." />
+            <button type="submit" class="search-button">Search</button>
+        </form>
+    </div>
+
+    <div id="resultsContainer"></div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const query = document.getElementById('searchInput').value;
+            if (query) {
+                fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => displayResults(data))
+                    .catch(error => console.error('Error:', error));
+            }
+        });
+
+        function displayResults(shows) {
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = ''; // Clear previous results
+
+            shows.forEach(showData => {
+                const show = showData.show;
+                const showCard = document.createElement('div');
+                showCard.className = 'show-card';
+
+                const image = show.image ? show.image.medium : 'https://via.placeholder.com/150';
+                showCard.innerHTML = `
+                    <img src="${image}" alt="${show.name}" class="show-image">
+                    <div class="show-info">
+                        <h2 class="show-title">${show.name}</h2>
+                        <p class="show-genres"><strong>Genres:</strong> ${show.genres.join(', ')}</p>
+                        <p class="show-summary">${show.summary ? show.summary : 'No summary available'}</p>
+                        <p class="show-rating"><strong>Average Rating:</strong> ${show.rating.average || 'N/A'}</p>
+                    </div>
+                `;
+                container.appendChild(showCard);
+            });
+        }
+    </script>
+
+</body>
+</html>

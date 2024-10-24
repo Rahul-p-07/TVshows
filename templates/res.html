@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Show Search Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .search-bar {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+        }
+        .search-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+        .show-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .show-image {
+            width: 100px;
+            float: left;
+            margin-right: 20px;
+        }
+        .show-info {
+            overflow: hidden;
+        }
+        .show-title {
+            font-size: 24px;
+            margin: 0;
+        }
+        .show-genres, .show-summary, .show-rating {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>TV Shows Search</h1>
+    </header>
+    <div class="search-container">
+        <form id="searchForm">
+            <input type="text" id="searchInput" class="search-bar" placeholder="Search for TV shows..." />
+            <button type="submit" class="search-button">Search</button>
+        </form>
+    </div>
+    {% for show in shows %}
+    <div class="show-card">
+        <img src="{{ show.image }}" alt="{{ show.name }} Poster">
+        <div class="show-info">
+            <h2>{{ show.name }}</h2>
+            <p><strong>Language:</strong> {{ show.language }}</p>
+            <p><strong>Genres:</strong> {{ show.genres | join(', ') }}</p>
+            <p><strong>Rating:</strong> {{ show.rating or "N/A" }}</p>
+            <p><strong>Summary:</strong> {{ show.summary | safe }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</body>
+</html>
