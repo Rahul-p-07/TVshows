@@ -1,7 +1,6 @@
 from flask import Flask,render_template,request,redirect,url_for
 import requests
 
-
 app=Flask("myApp")
 
 @app.route("/", methods=["POST","GET"])
@@ -35,4 +34,4 @@ def display(query):
             extracted_data.append(show_info)
         return render_template("res2.html", shows=extracted_data)
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0",port="5000",debug=True)
